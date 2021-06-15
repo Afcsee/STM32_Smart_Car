@@ -3,9 +3,10 @@
 u16 stop=900,run=200;//转不动减小run
 
 extern u32 status;
+extern float dis;
 
-u8 max_arg=15,max_arg_low,max_arg_high;
-float max_dis=20;
+u8 out,i,l_out,r_out,s_out;
+float dis_max,d,alldis[12];
 u8 arg=15,forward=1;            //arg=15中间
 
 //10前进，01后退
@@ -114,29 +115,46 @@ void Turn_SG(void)
 //寻找方向
 u8 Find_Director(void)
 {
-	arg=5;
-	SG_PWM_VAL=arg;
-	max_dis=20;
-	max_arg_low=15,max_arg_high=15;
-	while(1)
-	{
-		tran();
-		if(dis>80) dis=80;
-		if(dis>max_dis)
-		{
-			max_dis=dis;
-			max_arg_low=arg,max_arg_high=arg;
-		}
-		else if(dis==max_dis) max_arg_high=arg;
-		if(arg==15&&dis==80)
-		{
-			return 15;
-		}
-		if(arg==25) break;
-		arg+=2;
-		SG_PWM_VAL=arg;
-		delay_ms(300);
-	}
-	max_arg=(max_arg_high+max_arg_low)/2;
-    return max_arg;
+	Scan();
+    if(dis_max<30||l_out==r_out) return 0;
+    if(s_out>2) return 15;
+    if(l_out>r_out) return Max(7,10);
+    else return Max(0,3);
+}
+
+//扫描
+void Scan(void)
+{
+    dis_max=0;
+    l_out=0,r_out=0,s_out=0;
+    for(i=0;i<11;i++)
+    {
+        SG_PWM_VAL=5+2*i;
+        delay_ms(100);
+        tran();
+        alldis[i]=dis;
+        if(dis>30)
+        {
+            if(i<4) r_out++;
+            else if(i>6) l_out++;
+            else s_out++;
+        }
+        if(dis>dis_max) dis_max=dis;
+    }
+}
+
+u8 Max(u8 l,u8 r)
+{
+    float max=0;
+    u8 arg_l,arg_r;
+    for(i=l;i<=r;i++)
+    {
+        if(alldis[i]>max)
+        {
+            max=alldis[i];
+            arg_l=arg_r=5+2*i;
+        }
+        else if(alldis[i]==max) arg_r=5+2*i;
+    }
+    return (arg_l+arg_r)/2;
 }
