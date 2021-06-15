@@ -5,7 +5,7 @@ u16 stop=900,run=200;//转不动减小run
 extern u32 status;
 extern float dis;
 
-u8 out,i,l_out,r_out,s_out;
+u8 out,i,l_out,r_out,s_out,arg;
 float dis_max,d,alldis[12];
 u8 arg=15,forward=1;            //arg=15中间
 
@@ -116,8 +116,9 @@ void Turn_SG(void)
 u8 Find_Director(void)
 {
 	Scan();
+	arg=Max(0,10);
     if(dis_max<30||l_out==r_out) return 0;
-    if(s_out>2) return 15;
+    if(s_out>1||(arg>13&&arg<17)) return Max(4,6);
     if(l_out>r_out) return Max(7,10);
     else return Max(0,3);
 }
@@ -130,10 +131,11 @@ void Scan(void)
     for(i=0;i<11;i++)
     {
         SG_PWM_VAL=5+2*i;
-        delay_ms(100);
+        delay_ms(200);
         tran();
+			  if(dis>80) dis=80;
         alldis[i]=dis;
-        if(dis>30)
+        if(dis>20)
         {
             if(i<4) r_out++;
             else if(i>6) l_out++;
