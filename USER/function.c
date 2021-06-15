@@ -4,9 +4,10 @@ u16 stop=900,run=200;//转不动减小run
 
 extern u32 status;
 
-u8 max_arg=15,max_arg_low,max_arg_high;
+u8 max_arg=15,max_arg_low,max_arg_high,arg=15;
 float max_dis=20;
-u8 arg=15,forward=1;            //arg=15中间
+
+float dis_l,dis_r;
 
 //10前进，01后退
 //前进
@@ -96,19 +97,23 @@ void tran(void)
 }
 
 //左右测距
-void Turn_SG(void)
+void Keep_Balance(void)
 {
-	if(forward)
-	{
-		arg-=5;//-为右
-		if(arg==5) forward=0;
-	}
-	else
-	{
-		arg+=5;
-		if(arg==25) forward=1;
-	}
-	SG_PWM_VAL=arg;
+	SG_PWM_VAL=10;
+	delay_ms(100);
+	tran();
+	if(dis>80) dis=80;
+	dis_r=dis;
+
+	SG_PWM_VAL=20;
+	delay_ms(100);
+	tran();
+	if(dis>80) dis=80;
+	dis_l=dis;
+
+	if((dis_l-dis_r)<10&&(dis_r-dis_l)<10) return;
+	if(dis_l>dis_r) Turn_Left(100);
+	else Turn_Right(100);
 }
 
 //寻找方向

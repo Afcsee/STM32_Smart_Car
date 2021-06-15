@@ -2,7 +2,7 @@
 
 float dis;					// 距离计算值
 
-u8 mode=0,go_arg=15;
+u8 mode=0,go_arg=15,flag=0;
 
 u32 real_time,status=0;	 				      // 读回值;计数值，测距
 
@@ -42,7 +42,17 @@ int main(void)
 //直行模式
 void Mode_Go_Straight(void)
 {
-	Forward_run();
+	if(flag)
+	{
+		Forward_run();
+		flag=0;
+	}
+	else
+	{
+		Stop();
+		Keep_Balance();
+		flag=1;
+	}
 }
 
 //转向模式

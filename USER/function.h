@@ -14,7 +14,7 @@ void Stop(void);          //停止
 void tran(void); 					      // 左发生超声波函数
 
 //舵机部分
-void Turn_SG(void);
+void Keep_Balance(void);
 u8 Find_Director(void);
 
 #endif
