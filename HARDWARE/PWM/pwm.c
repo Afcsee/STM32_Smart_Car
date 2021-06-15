@@ -1,7 +1,5 @@
 #include "CONFIG.H"
 
-
-
 //PWM输出初始化
 //arr：自动重装值
 //psc：时钟预分频数
@@ -39,16 +37,3 @@ void PWM_Init(u16 arr,u16 psc)
 	TIM4->CR1|=0x01;    //使能定时器2				
 	
 }  	 
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -11,8 +11,9 @@
 	#include "usart.h"		
 	#include "delay.h"	
 	#include "pwm.h"
-  #include "exti.h"
+	#include "exti.h"
 	#include "timer.h"
 	#include "sg.h"
+	#include "function.h"
 
 #endif
