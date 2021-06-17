@@ -29,12 +29,13 @@ int main(void)
 			delay_ms(100);
 			tran();
 			if(dis>80) dis=80;
-			Mode_Go_Straight();
 			if(dis<30)
 			{
 				mode=1;
+				Backward_run();
 				Stop();
 			}
+			Mode_Go_Straight();
 		}
 		else Mode_Turn();
 		delay_ms(100);
@@ -44,7 +45,8 @@ int main(void)
 //直行模式
 void Mode_Go_Straight(void)
 {
-	if(flag<15)
+	
+	if(flag<10)
 	{
 		Forward_run();
 		flag++;
@@ -53,8 +55,17 @@ void Mode_Go_Straight(void)
 	{
 		Stop();
 		Keep_Balance();
+		Forward_run();
 		flag=0;
 	}
+	/*Forward_run();
+	flag++;
+	if(flag==10)
+	{
+		Keep_Balance();
+		flag=0;
+		Forward_run();
+	}*/
 }
 
 //转向模式
@@ -64,12 +75,14 @@ void Mode_Turn(void)
 	while(1)
 	{
 		go_arg=Find_Director();
-		if(13<go_arg&&go_arg<17) break;
-		else if(go_arg<=13&&go_arg!=0) Turn_Right((15-go_arg)*30);
-		else if(go_arg>=17&&go_arg!=0) Turn_Left((go_arg-15)*30);
+		if(13<=go_arg&&go_arg<=17) break;
+		else if(go_arg<13&&go_arg!=0) Turn_Right((15-go_arg)*50);
+		else if(go_arg>17&&go_arg!=0) Turn_Left((go_arg-15)*50);
 		else Backward_run();
 	}
 	mode=0;
 	SG_PWM_VAL=15;
+	delay_ms(100);
+	flag=0;
 }
 

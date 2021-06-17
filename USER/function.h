@@ -16,12 +16,5 @@ void tran(void); 					      // 左发生超声波函数
 //舵机部分
 void Keep_Balance(void);
 u8 Find_Director(void);
-void Scan(void);
 
-<<<<<<< HEAD
-=======
-u8 Need_Back(void);
-u8 Max(u8 l,u8 r);
-
->>>>>>> V2.0_b
 #endif
