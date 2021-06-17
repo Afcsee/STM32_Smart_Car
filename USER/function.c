@@ -3,6 +3,7 @@
 u16 stop=900,run=200;//转不动减小run
 
 extern u32 status;
+extern float dis;
 
 u8 max_arg=15,max_arg_low,max_arg_high,arg=15;
 float max_dis=20;
@@ -111,9 +112,17 @@ void Keep_Balance(void)
 	if(dis>80) dis=80;
 	dis_l=dis;
 
-	if((dis_l-dis_r)<10&&(dis_r-dis_l)<10) return;
-	if(dis_l>dis_r) Turn_Left(100);
-	else Turn_Right(100);
+	if((dis_l-dis_r)<5&&(dis_r-dis_l)<5) return;
+	if(dis_l>dis_r)
+	{
+		if((dis_l-dis_r)>20) Turn_Left(150);
+		else Turn_Left(100);
+	}
+	else
+	{
+		if((dis_r-dis_l)>20) Turn_Right(150);
+		else Turn_Left(100);
+	}
 }
 
 //寻找方向
@@ -140,7 +149,7 @@ u8 Find_Director(void)
 		if(arg==25) break;
 		arg+=2;
 		SG_PWM_VAL=arg;
-		delay_ms(300);
+		delay_ms(200);
 	}
 	max_arg=(max_arg_high+max_arg_low)/2;
     return max_arg;

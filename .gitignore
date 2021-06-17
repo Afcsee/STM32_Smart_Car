@@ -24,3 +24,5 @@ JLinkLog.txt
 *.map
 *.Administrator
 *.uvopt
+.vscode
+.vs
