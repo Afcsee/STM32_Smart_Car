@@ -5,16 +5,9 @@ u16 stop=900,run=200;//转不动减小run
 extern u32 status;
 extern float dis;
 
-<<<<<<< HEAD
-u8 max_arg=15,max_arg_low,max_arg_high,arg=15;
-float max_dis=20;
-
-float dis_l,dis_r;
-=======
 u8 out,i,l_out,l_hit,r_out,r_hit,s_out,s_hit,arg;
 float dis_max,d,alldis[12];
 u8 arg=15,forward=1;            //arg=15中间
->>>>>>> V2.0_b
 
 //10前进，01后退
 //前进
@@ -166,15 +159,6 @@ void Scan(void)
 			else if(i>6) l_hit++;
 			else s_hit++;
 		}
-<<<<<<< HEAD
-		if(arg==25) break;
-		arg+=2;
-		SG_PWM_VAL=arg;
-		delay_ms(200);
-	}
-	max_arg=(max_arg_high+max_arg_low)/2;
-    return max_arg;
-=======
         if(dis>dis_max) dis_max=dis;
     }
 }
@@ -202,5 +186,4 @@ u8 Need_Back(void)
 	if(r_out&&(!r_hit)&&l_out&&(!l_hit)) return 1;
 	if((!r_out)&&r_hit&&(!l_out)&&l_hit) return 1;
 	return 0;
->>>>>>> V2.0_b
 }
