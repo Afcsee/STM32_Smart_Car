@@ -18,6 +18,7 @@ void Turn_SG(void);
 u8 Find_Director(void);
 void Scan(void);
 
+u8 Need_Back(void);
 u8 Max(u8 l,u8 r);
 
 #endif
