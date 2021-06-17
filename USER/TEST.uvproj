@@ -467,6 +467,11 @@
               <FileType>1</FileType>
               <FilePath>.\test.c</FilePath>
             </File>
+            <File>
+              <FileName>function.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\function.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

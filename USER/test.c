@@ -64,9 +64,10 @@ void Mode_Turn(void)
 	while(1)
 	{
 		go_arg=Find_Director();
-		if(13<=go_arg&&go_arg<=17) break;
-		else if(go_arg<13) Turn_Right((15-go_arg)*50);
-		else if(go_arg>17) Turn_Left((go_arg-15)*50);
+		if(13<go_arg&&go_arg<17) break;
+		else if(go_arg<=13&&go_arg!=0) Turn_Right((15-go_arg)*30);
+		else if(go_arg>=17&&go_arg!=0) Turn_Left((go_arg-15)*30);
+		else Backward_run();
 	}
 	mode=0;
 	SG_PWM_VAL=15;

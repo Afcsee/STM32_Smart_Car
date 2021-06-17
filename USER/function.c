@@ -5,10 +5,16 @@ u16 stop=900,run=200;//转不动减小run
 extern u32 status;
 extern float dis;
 
+<<<<<<< HEAD
 u8 max_arg=15,max_arg_low,max_arg_high,arg=15;
 float max_dis=20;
 
 float dis_l,dis_r;
+=======
+u8 out,i,l_out,l_hit,r_out,r_hit,s_out,s_hit,arg;
+float dis_max,d,alldis[12];
+u8 arg=15,forward=1;            //arg=15中间
+>>>>>>> V2.0_b
 
 //10前进，01后退
 //前进
@@ -34,7 +40,7 @@ void Backward_run(void)
 	Left1=0;
 	Left2=1;
 
-    delay_ms(50);
+    delay_ms(250);
     Stop();
 }
 
@@ -128,24 +134,39 @@ void Keep_Balance(void)
 //寻找方向
 u8 Find_Director(void)
 {
-	arg=5;
-	SG_PWM_VAL=arg;
-	max_dis=20;
-	max_arg_low=15,max_arg_high=15;
-	while(1)
-	{
-		tran();
+	Scan();
+    if(s_out&&(!s_hit)) return Max(4,6);
+    if(Need_Back()) return 0;
+    if(((!r_out)&&(!r_hit)&&l_out&&l_hit)||(r_out&&(!r_hit))||((!l_out)&&l_hit)) return Max(7,10);
+    else return Max(0,3);
+}
+
+//扫描
+void Scan(void)
+{
+    dis_max=0;
+    l_out=0,r_out=0,s_out=0;
+	l_hit=0,r_hit=0,s_hit=0;
+    for(i=0;i<11;i++)
+    {
+        SG_PWM_VAL=5+2*i;
+        delay_ms(200);
+        tran();
 		if(dis>80) dis=80;
-		if(dis>max_dis)
+        alldis[i]=dis;
+        if(dis>40)
+        {
+            if(i<4) r_out++;
+            else if(i>6) l_out++;
+            else s_out++;
+        }
+		if(dis<10)
 		{
-			max_dis=dis;
-			max_arg_low=arg,max_arg_high=arg;
+			if(i<4) r_hit++;
+			else if(i>6) l_hit++;
+			else s_hit++;
 		}
-		else if(dis==max_dis) max_arg_high=arg;
-		if(arg==15&&dis==80)
-		{
-			return 15;
-		}
+<<<<<<< HEAD
 		if(arg==25) break;
 		arg+=2;
 		SG_PWM_VAL=arg;
@@ -153,4 +174,33 @@ u8 Find_Director(void)
 	}
 	max_arg=(max_arg_high+max_arg_low)/2;
     return max_arg;
+=======
+        if(dis>dis_max) dis_max=dis;
+    }
+}
+
+u8 Max(u8 l,u8 r)
+{
+    float max=0;
+    u8 arg_l,arg_r;
+    for(i=l;i<=r;i++)
+    {
+        if(alldis[i]>max)
+        {
+            max=alldis[i];
+            arg_l=arg_r=5+2*i;
+        }
+        else if(alldis[i]==max) arg_r=5+2*i;
+    }
+    return (arg_l+arg_r)/2;
+}
+
+u8 Need_Back(void)
+{
+	if((!r_hit)&&(!r_out)&&(!l_hit)&&(!l_out)) return 1;
+	if(r_out&&r_hit&&l_out&&l_hit) return 1;
+	if(r_out&&(!r_hit)&&l_out&&(!l_hit)) return 1;
+	if((!r_out)&&r_hit&&(!l_out)&&l_hit) return 1;
+	return 0;
+>>>>>>> V2.0_b
 }
