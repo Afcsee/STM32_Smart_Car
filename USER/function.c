@@ -1,6 +1,6 @@
 #include "CONFIG.H"
 
-u16 stop=900,run=100;//转不动减小run
+u16 stop=900,run=150;//转不动减小run
 
 extern u32 status;
 extern float dis;
@@ -154,5 +154,5 @@ u8 Find_Director(void)
 	}
 	max_arg=(max_arg_high+max_arg_low)/2;
 	if(max_dis<15) max_arg=0;
-  return max_arg;
+    return max_arg;
 }
